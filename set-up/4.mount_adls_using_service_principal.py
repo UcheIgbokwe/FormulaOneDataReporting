@@ -43,4 +43,5 @@ display(dbutils.fs.mounts())
 
 # COMMAND ----------
 
+# Unmount the storage account container
 dbutils.fs.unmount("/mnt/formula1dl/demo")
