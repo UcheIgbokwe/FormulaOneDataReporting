@@ -1,6 +1,7 @@
 # Databricks notebook source
+# DBTITLE 1, Ingest laptimes.csv file
 # MAGIC %md
-# MAGIC #### Ingest laptimes.json file
+# MAGIC #### Ingest laptimes.csv file
 
 # COMMAND ----------
 
