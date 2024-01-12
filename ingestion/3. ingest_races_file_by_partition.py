@@ -4,17 +4,11 @@
 
 # COMMAND ----------
 
-# MAGIC %md
-# MAGIC ###### List all mounted files
+# MAGIC %run "../includes/configuration"
 
 # COMMAND ----------
 
-display(dbutils.fs.mounts())
-
-# COMMAND ----------
-
-# MAGIC %fs
-# MAGIC ls "/mnt/formula1dluche/raw"
+# MAGIC %run "../includes/common_functions"
 
 # COMMAND ----------
 
@@ -43,7 +37,7 @@ races_schema = StructType(fields=[
 races_df = spark.read \
 .option("header", True) \
 .schema(races_schema) \
-.csv("/mnt/formula1dluche/raw/races.csv")
+.csv(f"{raw_folder_path}/races.csv")
 
 # COMMAND ----------
 
@@ -52,11 +46,11 @@ races_df = spark.read \
 
 # COMMAND ----------
 
-from pyspark.sql.functions import current_timestamp, concat, lit, col, to_timestamp
+from pyspark.sql.functions import concat, lit, col, to_timestamp
 
 # COMMAND ----------
 
-races_with_timestamp_df = races_df.withColumn("ingestion_date", current_timestamp()) \
+races_with_timestamp_df = add_ingestion_date(races_df) \
     .withColumn("race_timestamp", to_timestamp(concat(col('date'), lit(' '), col('time')), 'yyyy-MM-dd HH:mm:ss'))
 
 # COMMAND ----------
@@ -86,18 +80,10 @@ races_final_df = races_selected_df.withColumnRenamed("raceId", "race_id") \
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ###### Step 5 - Write data to DataLake in Parquet
+# MAGIC ###### Step 5 - Write data to DataLake in Parquet By Partition
 
 # COMMAND ----------
 
 races_final_df.write.mode("overwrite") \
-    .parquet("/mnt/formula1dluche/processed/races")
-
-# COMMAND ----------
-
-# MAGIC %fs
-# MAGIC ls /mnt/formula1dluche/processed/races
-
-# COMMAND ----------
-
-display(spark.read.parquet("/mnt/formula1dluche/processed/races"))
+    .partitionBy("race_year") \
+    .parquet(f"{processed_folder_path}/races")

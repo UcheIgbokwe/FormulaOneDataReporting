@@ -4,6 +4,14 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/configuration"
+
+# COMMAND ----------
+
+# MAGIC %run "../includes/common_functions"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the CSV file using the spark dataframe reader
 
@@ -30,11 +38,7 @@ circuits_schema = StructType(fields=[
 circuits_df = spark.read \
 .option("header", True) \
 .schema(circuits_schema) \
-.csv("/mnt/formula1dluche/raw/circuits.csv")
-
-# COMMAND ----------
-
-type(circuits_df)
+.csv(f"{raw_folder_path}/circuits.csv")
 
 # COMMAND ----------
 
@@ -69,11 +73,7 @@ circuits_rename_df = circuits_selected_df.withColumnRenamed("circuitId", "circui
 
 # COMMAND ----------
 
-from pyspark.sql.functions import current_timestamp
-
-# COMMAND ----------
-
-circuits_final_df = circuits_rename_df.withColumn("ingestion_date", current_timestamp())
+circuits_final_df = add_ingestion_date(circuits_rename_df)
 
 # COMMAND ----------
 
@@ -82,7 +82,7 @@ circuits_final_df = circuits_rename_df.withColumn("ingestion_date", current_time
 
 # COMMAND ----------
 
-circuits_final_df.write.mode("overwrite").parquet("/mnt/formula1dluche/processed/circuits")
+circuits_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/circuits")
 
 # COMMAND ----------
 
