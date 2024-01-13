@@ -64,7 +64,7 @@ from pyspark.sql.functions import concat, lit, col
 
 # COMMAND ----------
 
-drivers_renamed_df = drivers_df.withColumnRenamed("diverId", "driver_id") \
+drivers_renamed_df = drivers_df.withColumnRenamed("driverId", "driver_id") \
 .withColumnRenamed("driverRef", "driver_ref") \
 .withColumn("name", concat(col("name.forename"), lit(" "), col("name.surname")) )
 
