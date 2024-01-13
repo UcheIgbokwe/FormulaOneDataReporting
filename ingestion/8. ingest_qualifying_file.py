@@ -13,6 +13,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/resource_file"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the multiple multi-line json files using the spark dataframe reader
 
@@ -66,3 +70,11 @@ qualifying_final_df = qualifying_ingestion_date_df.withColumnRenamed("qualifyId"
 
 qualifying_final_df.write.mode("overwrite") \
     .parquet(f"{processed_folder_path}/qualifying")
+
+# COMMAND ----------
+
+finalize_notebook()
+
+# COMMAND ----------
+
+dbutils.notebook.exit('Success')

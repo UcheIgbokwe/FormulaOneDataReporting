@@ -12,6 +12,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/resource_file"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the JSON file using the spark dataframe reader
 
@@ -91,4 +95,8 @@ drivers_final_df.write.mode("overwrite") \
 
 # COMMAND ----------
 
+finalize_notebook()
 
+# COMMAND ----------
+
+dbutils.notebook.exit('Success')

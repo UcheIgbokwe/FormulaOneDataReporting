@@ -12,6 +12,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/resource_file"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the CSV file using the spark dataframe reader
 
@@ -95,4 +99,8 @@ display(spark.read.parquet("/mnt/formula1dluche/processed/circuits"))
 
 # COMMAND ----------
 
+finalize_notebook()
 
+# COMMAND ----------
+
+dbutils.notebook.exit('Success')

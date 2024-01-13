@@ -12,6 +12,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/resource_file"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the CSV file using the spark dataframe reader
 
@@ -87,3 +91,11 @@ races_final_df = races_selected_df.withColumnRenamed("raceId", "race_id") \
 races_final_df.write.mode("overwrite") \
     .partitionBy("race_year") \
     .parquet(f"{processed_folder_path}/races")
+
+# COMMAND ----------
+
+finalize_notebook()
+
+# COMMAND ----------
+
+dbutils.notebook.exit('Success')

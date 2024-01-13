@@ -13,6 +13,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/resource_file"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the multiple CSV files using the spark dataframe reader
 
@@ -60,3 +64,11 @@ lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("diverId", "d
 
 lap_times_final_df.write.mode("overwrite") \
     .parquet(f"{processed_folder_path}/lap_times")
+
+# COMMAND ----------
+
+finalize_notebook()
+
+# COMMAND ----------
+
+dbutils.notebook.exit('Success')

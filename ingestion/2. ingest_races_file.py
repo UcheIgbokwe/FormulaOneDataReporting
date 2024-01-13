@@ -12,6 +12,10 @@
 
 # COMMAND ----------
 
+# MAGIC %run "../includes/resource_file"
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### List all mounted files
 
@@ -99,3 +103,11 @@ races_final_df.write.mode("overwrite") \
 # COMMAND ----------
 
 display(spark.read.parquet("/mnt/formula1dluche/processed/races"))
+
+# COMMAND ----------
+
+finalize_notebook()
+
+# COMMAND ----------
+
+dbutils.notebook.exit('Success')
