@@ -18,12 +18,12 @@ demo_race_results_df = spark.read.parquet(f"{presentation_folder_path}/race_resu
 # COMMAND ----------
 
 # Convert the DataFrame to Delta format
-demo_race_results_df.write.format("delta").mode("overwrite").save(f"{delta_folder_path}/race_results_delta")
+demo_race_results_df.write.format("delta").mode("overwrite").save(f"{delta_folder_path}/demo_race_results_delta")
 
 # COMMAND ----------
 
 # Create a DeltaTable object
-delta_table = DeltaTable.forPath(spark, f"{delta_folder_path}/race_results_delta")
+delta_table = DeltaTable.forPath(spark, f"{delta_folder_path}/demo_race_results_delta")
 
 # COMMAND ----------
 
