@@ -56,7 +56,7 @@ final_df = constructor_standings_df.withColumn("rank", rank().over(constructorRa
 # COMMAND ----------
 
 final_df.write.mode("overwrite") \
-    .parquet(f"{presentation_folder_path}/constructor_standings")
+    .format("parquet").saveAsTable("f1_presentation.constructor_standings")
 
 # COMMAND ----------
 

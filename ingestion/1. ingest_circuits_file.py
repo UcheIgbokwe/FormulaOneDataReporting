@@ -86,16 +86,12 @@ circuits_final_df = add_ingestion_date(circuits_rename_df)
 
 # COMMAND ----------
 
-circuits_final_df.write.mode("overwrite").parquet(f"{processed_folder_path}/circuits")
+circuits_final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_processed.circuits")
 
 # COMMAND ----------
 
-# MAGIC %fs
-# MAGIC ls /mnt/formula1dluche/processed/circuits
-
-# COMMAND ----------
-
-display(spark.read.parquet("/mnt/formula1dluche/processed/circuits"))
+# MAGIC %sql
+# MAGIC SELECT * FROM f1_processed.circuits
 
 # COMMAND ----------
 

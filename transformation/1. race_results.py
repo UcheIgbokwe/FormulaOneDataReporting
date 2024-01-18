@@ -70,7 +70,7 @@ final_df = race_results_df.select('race_year', 'race_name', 'circuit_location',
 # COMMAND ----------
 
 final_df.write.mode("overwrite") \
-    .parquet(f"{presentation_folder_path}/race_results")
+    .format("parquet").saveAsTable("f1_presentation.race_results")
 
 # COMMAND ----------
 

@@ -21,7 +21,7 @@
 
 # COMMAND ----------
 
-display(dbutils.fs.mounts())
+#display(dbutils.fs.mounts())
 
 # COMMAND ----------
 
@@ -98,11 +98,11 @@ races_final_df = races_selected_df.withColumnRenamed("raceId", "race_id") \
 # COMMAND ----------
 
 races_final_df.write.mode("overwrite") \
-    .parquet(f"{processed_folder_path}/races")
+    .format("parquet").saveAsTable("f1_processed.races")
 
 # COMMAND ----------
 
-display(spark.read.parquet("/mnt/formula1dluche/processed/races"))
+#display(spark.read.parquet("/mnt/formula1dluche/processed/races"))
 
 # COMMAND ----------
 

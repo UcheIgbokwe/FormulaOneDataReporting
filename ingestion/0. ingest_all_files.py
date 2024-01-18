@@ -65,3 +65,11 @@ v_result = dbutils.notebook.run("8. ingest_qualifying_file", 0)
 # COMMAND ----------
 
 v_result
+
+# COMMAND ----------
+
+v_result = dbutils.notebook.run("9. ingest_results_file", 0)
+
+# COMMAND ----------
+
+v_result

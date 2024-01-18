@@ -51,10 +51,6 @@ drivers_df = spark.read \
 
 # COMMAND ----------
 
-display(drivers_df)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ###### Step 2 - Rename the columns and add ingestion date
 
@@ -91,7 +87,7 @@ drivers_final_df = drivers_add_date_df.drop("url") \
 # COMMAND ----------
 
 drivers_final_df.write.mode("overwrite") \
-    .parquet(f"{processed_folder_path}/drivers")
+    .format("parquet").saveAsTable("f1_processed.drivers")
 
 # COMMAND ----------
 

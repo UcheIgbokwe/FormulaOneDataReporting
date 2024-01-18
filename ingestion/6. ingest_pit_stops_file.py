@@ -45,10 +45,6 @@ pit_stops_df = spark.read \
 
 # COMMAND ----------
 
-display(pit_stops_df)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ###### Step 2 - Rename the columns and add ingestion date
 
@@ -69,7 +65,7 @@ pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("diverId"
 # COMMAND ----------
 
 pit_stops_final_df.write.mode("overwrite") \
-    .parquet(f"{processed_folder_path}/pitstops")
+    .format("parquet").saveAsTable("f1_processed.pitstops")
 
 # COMMAND ----------
 

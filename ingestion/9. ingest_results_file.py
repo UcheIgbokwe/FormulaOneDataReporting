@@ -91,7 +91,7 @@ results_final_df = results_dropped_df.withColumnRenamed("resultId", "result_id")
 # COMMAND ----------
 
 results_final_df.write.mode("overwrite") \
-    .parquet(f"{processed_folder_path}/results")
+    .format("parquet").saveAsTable("f1_processed.results")
 
 # COMMAND ----------
 

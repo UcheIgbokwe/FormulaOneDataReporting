@@ -63,7 +63,7 @@ lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("diverId", "d
 # COMMAND ----------
 
 lap_times_final_df.write.mode("overwrite") \
-    .parquet(f"{processed_folder_path}/lap_times")
+    .format("parquet").saveAsTable("f1_processed.lap_times")
 
 # COMMAND ----------
 

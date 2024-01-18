@@ -56,7 +56,7 @@ final_df = driver_standings_df.withColumn("rank", rank().over(driverRankSpec))
 # COMMAND ----------
 
 final_df.write.mode("overwrite") \
-    .parquet(f"{presentation_folder_path}/driver_standings")
+    .format("parquet").saveAsTable("f1_presentation.driver_standings")
 
 # COMMAND ----------
 

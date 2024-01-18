@@ -88,9 +88,7 @@ races_final_df = races_selected_df.withColumnRenamed("raceId", "race_id") \
 
 # COMMAND ----------
 
-races_final_df.write.mode("overwrite") \
-    .partitionBy("race_year") \
-    .parquet(f"{processed_folder_path}/races")
+#races_final_df.write.mode("overwrite").partitionBy("race_year").format("parquet").saveAsTable("f1_processed.races_by_year")
 
 # COMMAND ----------
 

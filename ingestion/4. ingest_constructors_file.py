@@ -31,10 +31,6 @@ constructors_df = spark.read \
 
 # COMMAND ----------
 
-display(constructors_df)
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ###### Step 2 - Drop unwanted column
 
@@ -68,7 +64,7 @@ constructors_final_df = add_ingestion_date(constructors_renamed_df)
 # COMMAND ----------
 
 constructors_final_df.write.mode("overwrite") \
-    .parquet(f"{processed_folder_path}/constructors")
+    .format("parquet").saveAsTable("f1_processed.constructors")
 
 # COMMAND ----------
 
