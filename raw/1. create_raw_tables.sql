@@ -20,11 +20,11 @@ CREATE TABLE IF NOT EXISTS f1_raw.circuits(
   url STRING
 )
 USING csv
-OPTIONS (path "/mnt/formula1dluche/raw/circuits.csv", header true)
+OPTIONS(path "/mnt/formula1dluche/raw/circuits.csv", header true)
 
 -- COMMAND ----------
 
-SELECT * FROM f1_raw.circuits;
+--SELECT * FROM f1_raw.circuits;
 
 -- COMMAND ----------
 
@@ -44,8 +44,163 @@ CREATE TABLE IF NOT EXISTS f1_raw.races(
   url STRING
 )
 USING csv
-OPTIONS (path "/mnt/formula1dluche/raw/races.csv", header true)
+OPTIONS(path "/mnt/formula1dluche/raw/races.csv", header true)
 
 -- COMMAND ----------
 
-SELECT * FROM f1_raw.races;
+--SELECT * FROM f1_raw.races;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### Create constructors table
+
+-- COMMAND ----------
+
+CREATE TABLE IF NOT EXISTS f1_raw.constructors( 
+  constructorId INT, 
+  constructorRef STRING, 
+  name STRING, 
+  nationality STRING, 
+  url STRING
+)
+USING json
+OPTIONS(path "/mnt/formula1dluche/raw/constructors.json")
+
+-- COMMAND ----------
+
+--SELECT * FROM f1_raw.constructors;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### Create drivers table
+
+-- COMMAND ----------
+
+CREATE TABLE IF NOT EXISTS f1_raw.drivers( 
+  driverId INT, 
+  driverRef STRING, 
+  number INT, 
+  code STRING, 
+  name STRUCT<forename: STRING, surname: STRING>,
+  dob DATE,
+  nationality STRING, 
+  url STRING
+)
+USING json
+OPTIONS(path "/mnt/formula1dluche/raw/drivers.json")
+
+-- COMMAND ----------
+
+--SELECT * FROM f1_raw.drivers;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### Create results table
+
+-- COMMAND ----------
+
+CREATE TABLE IF NOT EXISTS f1_raw.results( 
+  resultId INT,
+  raceId INT,
+  driverId INT,
+  constructorId INT, 
+  number INT, grid INT, 
+  position INT, 
+  positionText STRING,
+  positionOrder INT, 
+  points INT, 
+  laps INT, 
+  time STRING,
+  milliseconds INT, 
+  fastestLap INT, 
+  rank INT, 
+  fastestLapTime INT, 
+  fastestLapSpeed STRING,
+  statusId INT
+)
+USING json
+OPTIONS(path "/mnt/formula1dluche/raw/results.json")
+
+-- COMMAND ----------
+
+--SELECT * FROM f1_raw.results;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### Create pit stops table
+
+-- COMMAND ----------
+
+CREATE TABLE IF NOT EXISTS f1_raw.pitstops( 
+  raceId INT,
+  driverId INT,
+  stop INT,
+  laps INT, 
+  time STRING,
+  duration STRING, 
+  milliseconds INT
+)
+USING json
+OPTIONS(path "/mnt/formula1dluche/raw/pit_stops.json", multiLine true)
+
+
+-- COMMAND ----------
+
+--SELECT * FROM f1_raw.pitstops;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC #### Create tables for list of files
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ###### Create Lap Times Table
+
+-- COMMAND ----------
+
+CREATE TABLE IF NOT EXISTS f1_raw.lap_times( 
+  raceId INT,
+  driverId INT,
+  lap INT, 
+  position INT, 
+  time STRING,
+  milliseconds INT
+)
+USING csv
+OPTIONS(path "/mnt/formula1dluche/raw/lap_times")
+
+-- COMMAND ----------
+
+-- SELECT * FROM f1_raw.lap_times;
+
+-- COMMAND ----------
+
+-- MAGIC %md
+-- MAGIC ###### Create Qualifying Table
+
+-- COMMAND ----------
+
+CREATE TABLE IF NOT EXISTS f1_raw.qualifying( 
+  qualifyId INT,
+  raceId INT,
+  driverId INT,
+  constructorId INT, 
+  number INT,
+  position INT,
+  q1 STRING,
+  q2 STRING, 
+  q3 STRING
+)
+USING json
+OPTIONS(path "/mnt/formula1dluche/raw/qualifying", multiLine true)
+
+-- COMMAND ----------
+
+--SELECT * FROM f1_raw.qualifying;
+--desc extended f1_raw.qualifying; --THIS TELLS YOU IF IT IS EXTERNAL OR MANAGED TABLE
