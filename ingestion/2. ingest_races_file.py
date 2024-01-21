@@ -102,7 +102,7 @@ races_final_df.write.mode("overwrite") \
 
 # COMMAND ----------
 
-#display(spark.read.parquet("/mnt/formula1dluche/processed/races"))
+display(spark.read.parquet("/mnt/formula1dluche/processed/races"))
 
 # COMMAND ----------
 

@@ -1,4 +1,5 @@
 -- Databricks notebook source
+DROP DATABASE IF EXISTS f1_raw;
 CREATE DATABASE IF NOT EXISTS f1_raw;
 
 -- COMMAND ----------
