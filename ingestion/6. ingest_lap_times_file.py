@@ -5,6 +5,16 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("p_data_source", "")
+v_data_source = dbutils.widgets.get("p_data_source")
+
+# COMMAND ----------
+
+dbutils.widgets.text("p_file_date", "")
+v_file_date = dbutils.widgets.get("p_file_date")
+
+# COMMAND ----------
+
 # MAGIC %run "../includes/configuration"
 
 # COMMAND ----------
@@ -39,7 +49,7 @@ lap_times_schema = StructType(fields=[
 
 lap_times_df = spark.read \
 .schema(lap_times_schema) \
-.csv(f"{raw_folder_path}/lap_times")
+.csv(f"{raw_folder_path}/{v_file_date}/lap_times")
 
 # COMMAND ----------
 
@@ -52,8 +62,14 @@ lap_times_ingestion_date_df = add_ingestion_date(lap_times_df)
 
 # COMMAND ----------
 
+from pyspark.sql.functions import lit
+
+# COMMAND ----------
+
 lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("diverId", "driver_id") \
-.withColumnRenamed("raceId", "race_id")
+    .withColumnRenamed("raceId", "race_id") \
+    .withColumn("data_source", lit(v_data_source)) \
+    .withColumn("file_date", lit(v_file_date))
 
 # COMMAND ----------
 
@@ -62,8 +78,11 @@ lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("diverId", "d
 
 # COMMAND ----------
 
-lap_times_final_df.write.mode("overwrite") \
-    .format("parquet").saveAsTable("f1_processed.lap_times")
+lap_times_final_df = move_columns_to_end(lap_times_final_df, ["race_id"])
+
+# COMMAND ----------
+
+write_to_table(spark, lap_times_final_df, "f1_processed.lap_times", "race_id", dynamic_partition=True)
 
 # COMMAND ----------
 

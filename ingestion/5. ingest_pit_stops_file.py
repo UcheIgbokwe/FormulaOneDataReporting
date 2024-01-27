@@ -5,6 +5,16 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("p_data_source", "")
+v_data_source = dbutils.widgets.get("p_data_source")
+
+# COMMAND ----------
+
+dbutils.widgets.text("p_file_date", "")
+v_file_date = dbutils.widgets.get("p_file_date")
+
+# COMMAND ----------
+
 # MAGIC %run "../includes/configuration"
 
 # COMMAND ----------
@@ -41,7 +51,7 @@ pit_stops_schema = StructType(fields=[
 pit_stops_df = spark.read \
 .schema(pit_stops_schema) \
 .option("multiLine", "true") \
-.json(f"{raw_folder_path}/pit_stops.json")
+.json(f"{raw_folder_path}/{v_file_date}/pit_stops.json")
 
 # COMMAND ----------
 
@@ -54,8 +64,14 @@ pit_stops_add_ingestion_date_df = add_ingestion_date(pit_stops_df)
 
 # COMMAND ----------
 
+from pyspark.sql.functions import lit
+
+# COMMAND ----------
+
 pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("diverId", "driver_id") \
-.withColumnRenamed("raceId", "race_id")
+    .withColumnRenamed("raceId", "race_id") \
+    .withColumn("data_source", lit(v_data_source)) \
+    .withColumn("file_date", lit(v_file_date))
 
 # COMMAND ----------
 
@@ -64,8 +80,11 @@ pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("diverId"
 
 # COMMAND ----------
 
-pit_stops_final_df.write.mode("overwrite") \
-    .format("parquet").saveAsTable("f1_processed.pitstops")
+pit_stops_final_df = move_columns_to_end(pit_stops_final_df, ["race_id"])
+
+# COMMAND ----------
+
+write_to_table(spark, pit_stops_final_df, "f1_processed.pitstops", "race_id", dynamic_partition=True)
 
 # COMMAND ----------
 

@@ -4,10 +4,12 @@
 
 -- COMMAND ----------
 
-DROP SCHEMA IF EXISTS f1_presentation CASCADE;
-DROP DATABASE IF EXISTS f1_presentation;
-CREATE DATABASE IF NOT EXISTS f1_presentation
-LOCATION "/mnt/formula1dluche/presentation";
+-- MAGIC %run "../utils/drop_and_create_all_tables"
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC drop_create_database('presentation')
 
 -- COMMAND ----------
 

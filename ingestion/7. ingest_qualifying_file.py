@@ -5,6 +5,16 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("p_data_source", "")
+v_data_source = dbutils.widgets.get("p_data_source")
+
+# COMMAND ----------
+
+dbutils.widgets.text("p_file_date", "")
+v_file_date = dbutils.widgets.get("p_file_date")
+
+# COMMAND ----------
+
 # MAGIC %run "../includes/configuration"
 
 # COMMAND ----------
@@ -43,7 +53,7 @@ qualifying_schema = StructType(fields=[
 qualifying_df = spark.read \
 .schema(qualifying_schema) \
 .option("multiLine", "true") \
-.json(f"{raw_folder_path}/qualifying")
+.json(f"{raw_folder_path}/{v_file_date}/qualifying")
 
 # COMMAND ----------
 
@@ -56,10 +66,16 @@ qualifying_ingestion_date_df = add_ingestion_date(qualifying_df)
 
 # COMMAND ----------
 
+from pyspark.sql.functions import lit
+
+# COMMAND ----------
+
 qualifying_final_df = qualifying_ingestion_date_df.withColumnRenamed("qualifyId", "qualify_id") \
-.withColumnRenamed("diverId", "driver_id") \
-.withColumnRenamed("raceId", "race_id") \
-.withColumnRenamed("constructorId", "constructor_id")
+    .withColumnRenamed("diverId", "driver_id") \
+    .withColumnRenamed("raceId", "race_id") \
+    .withColumnRenamed("constructorId", "constructor_id") \
+    .withColumn("data_source", lit(v_data_source)) \
+    .withColumn("file_date", lit(v_file_date))
 
 # COMMAND ----------
 
@@ -68,8 +84,11 @@ qualifying_final_df = qualifying_ingestion_date_df.withColumnRenamed("qualifyId"
 
 # COMMAND ----------
 
-qualifying_final_df.write.mode("overwrite") \
-    .format("parquet").saveAsTable("f1_processed.qualifying")
+qualifying_final_df = move_columns_to_end(qualifying_final_df, ["race_id"])
+
+# COMMAND ----------
+
+write_to_table(spark, qualifying_final_df, "f1_processed.qualifying", "race_id", dynamic_partition=True)
 
 # COMMAND ----------
 
