@@ -84,11 +84,7 @@ qualifying_final_df = qualifying_ingestion_date_df.withColumnRenamed("qualifyId"
 
 # COMMAND ----------
 
-qualifying_final_df = move_columns_to_end(qualifying_final_df, ["race_id"])
-
-# COMMAND ----------
-
-write_to_table(spark, qualifying_final_df, "f1_processed.qualifying", "race_id", dynamic_partition=True)
+process_and_write_to_table(spark, qualifying_final_df, "f1_processed.qualifying", "race_id", ["race_id"], dynamic_partition=True)
 
 # COMMAND ----------
 

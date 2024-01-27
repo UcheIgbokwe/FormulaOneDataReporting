@@ -80,11 +80,7 @@ pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("diverId"
 
 # COMMAND ----------
 
-pit_stops_final_df = move_columns_to_end(pit_stops_final_df, ["race_id"])
-
-# COMMAND ----------
-
-write_to_table(spark, pit_stops_final_df, "f1_processed.pitstops", "race_id", dynamic_partition=True)
+process_and_write_to_table(spark, pit_stops_final_df, "f1_processed.pitstops", "race_id", ["race_id"], dynamic_partition=True)
 
 # COMMAND ----------
 

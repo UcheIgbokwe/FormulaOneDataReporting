@@ -132,11 +132,7 @@ results_final_df = results_dropped_df.withColumnRenamed("resultId", "result_id")
 
 # COMMAND ----------
 
-results_final_df = move_columns_to_end(results_final_df, ["race_id"])
-
-# COMMAND ----------
-
-write_to_table(spark, results_final_df, "f1_processed.results", "race_id", dynamic_partition=True)
+process_and_write_to_table(spark, results_final_df, "f1_processed.results", "race_id", ["race_id"], dynamic_partition=True)
 
 # COMMAND ----------
 
@@ -148,8 +144,7 @@ dbutils.notebook.exit('Success')
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC --SELECT * FROM f1_processed.results;
-# MAGIC SELECT race_id, count(1) FROM f1_processed.results
-# MAGIC GROUP BY race_id
-# MAGIC ORDER BY race_id DESC;
+# %sql
+# SELECT race_id, count(1) FROM f1_processed.results
+# GROUP BY race_id
+# ORDER BY race_id DESC;

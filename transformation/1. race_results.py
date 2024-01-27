@@ -4,7 +4,16 @@
 
 # COMMAND ----------
 
+dbutils.widgets.text("p_file_date", "")
+v_file_date = dbutils.widgets.get("p_file_date")
+
+# COMMAND ----------
+
 # MAGIC %run "../includes/configuration"
+
+# COMMAND ----------
+
+# MAGIC %run "../includes/common_functions"
 
 # COMMAND ----------
 
@@ -36,7 +45,9 @@ constructors_df = spark.read.parquet(f"{processed_folder_path}/constructors") \
 # COMMAND ----------
 
 results_df = spark.read.parquet(f"{processed_folder_path}/results") \
-    .withColumnRenamed("time", "race_time")
+    .filter(f"file_date == '{v_file_date}'") \
+    .withColumnRenamed("time", "race_time") \
+    .withColumnRenamed("race_id", "result_race_id")
 
 # COMMAND ----------
 
@@ -48,7 +59,7 @@ race_circuit_df = races_df.join(circuits_df, races_df.circuit_id == circuits_df.
 
 # Join results to other dataframes
 race_results_df = results_df \
-    .join(race_circuit_df, results_df.race_id == race_circuit_df.race_id, "inner") \
+    .join(race_circuit_df, results_df.result_race_id == race_circuit_df.race_id, "inner") \
     .join(drivers_df, results_df.driver_id == drivers_df.driver_id, "inner") \
     .join(constructors_df, results_df.constructor_id == constructors_df.constructor_id, "inner")
 
@@ -58,7 +69,7 @@ from pyspark.sql.functions import current_timestamp
 
 # COMMAND ----------
 
-final_df = race_results_df.select('race_year', 'race_name', 'circuit_location', 
+final_df = race_results_df.select('race_id','race_year', 'race_name', 'circuit_location', 
     'driver_name', 'driver_number', 'driver_nationality','team', 'grid', 'fastest_lap','race_time', 'points','position') \
     .withColumn('created_date', current_timestamp())
 
@@ -69,8 +80,7 @@ final_df = race_results_df.select('race_year', 'race_name', 'circuit_location',
 
 # COMMAND ----------
 
-final_df.write.mode("overwrite") \
-    .format("parquet").saveAsTable("f1_presentation.race_results")
+process_and_write_to_table(spark, final_df, "f1_presentation.race_results", "race_id", ["race_id"], dynamic_partition=True)
 
 # COMMAND ----------
 
