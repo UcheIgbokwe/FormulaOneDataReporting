@@ -1,4 +1,9 @@
 # Databricks notebook source
+html = """<h1 style="color:Black;text-align:center;font-family:Ariel">Report on Dominant Formula 1 Teams </h1>"""
+displayHTML(html)
+
+# COMMAND ----------
+
 # MAGIC %sql
 # MAGIC CREATE OR REPLACE TEMP VIEW v_dominant_teams AS
 # MAGIC SELECT 
