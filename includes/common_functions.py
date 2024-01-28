@@ -38,3 +38,14 @@ def process_and_write_to_table(spark: SparkSession, df: DataFrame, table_name: s
         df.write.mode("overwrite").insertInto(table_name)
     else:
         df.write.mode("overwrite").partitionBy(partition_column).format("parquet").saveAsTable(table_name)
+
+# COMMAND ----------
+
+def df_column_to_list(input_df, column_name):
+    df_row_list = input_df.select(column_name) \
+                            .distinct() \
+                            .collect()
+
+    # PYTHON WAY OF DOING AN APPEND
+    column_value_list= [row[column_name] for row in df_row_list]
+    return column_value_list                        

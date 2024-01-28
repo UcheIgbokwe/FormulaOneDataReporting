@@ -47,7 +47,8 @@ constructors_df = spark.read.parquet(f"{processed_folder_path}/constructors") \
 results_df = spark.read.parquet(f"{processed_folder_path}/results") \
     .filter(f"file_date == '{v_file_date}'") \
     .withColumnRenamed("time", "race_time") \
-    .withColumnRenamed("race_id", "result_race_id")
+    .withColumnRenamed("race_id", "result_race_id") \
+    .withColumnRenamed("file_date", "result_file_date")
 
 # COMMAND ----------
 
@@ -70,8 +71,9 @@ from pyspark.sql.functions import current_timestamp
 # COMMAND ----------
 
 final_df = race_results_df.select('race_id','race_year', 'race_name', 'circuit_location', 
-    'driver_name', 'driver_number', 'driver_nationality','team', 'grid', 'fastest_lap','race_time', 'points','position') \
-    .withColumn('created_date', current_timestamp())
+    'driver_name', 'driver_number', 'driver_nationality','team', 'grid', 'fastest_lap','race_time', 'points','position', 'result_file_date') \
+    .withColumn('created_date', current_timestamp()) \
+    .withColumnRenamed("result_file_date", "file_date")
 
 # COMMAND ----------
 
