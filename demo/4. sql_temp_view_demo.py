@@ -3,11 +3,11 @@
 # MAGIC #### Access dataframes using SQL
 # MAGIC
 # MAGIC ###### Objectives
-# MAGIC 1.Create temporary views on dataframes 
+# MAGIC 1. Create temporary views on dataframes 
 # MAGIC
-# MAGIC 2.Access the view from SQL cell 
+# MAGIC 2. Access the view from SQL cell 
 # MAGIC
-# MAGIC 3.Access the view from Python cell 
+# MAGIC 3. Access the view from Python cell 
 
 # COMMAND ----------
 

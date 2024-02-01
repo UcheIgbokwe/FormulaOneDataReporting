@@ -2,13 +2,10 @@
 # MAGIC %md
 # MAGIC #### Global Temporary Views
 # MAGIC
-# MAGIC 1.Create global temporary views on dataframes 
-# MAGIC
-# MAGIC 2.Access the view from SQL cell 
-# MAGIC
-# MAGIC 3.Access the view from Python cell 
-# MAGIC
-# MAGIC 4.Access the view from another notebook
+# MAGIC 1. Create global temporary views on dataframes 
+# MAGIC 2. Access the view from SQL cell 
+# MAGIC 3. Access the view from Python cell 
+# MAGIC 4. Access the view from another notebook
 
 # COMMAND ----------
 
