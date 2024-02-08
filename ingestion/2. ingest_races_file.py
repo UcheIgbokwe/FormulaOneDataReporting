@@ -105,16 +105,12 @@ races_final_df = races_selected_df.withColumnRenamed("raceId", "race_id") \
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ###### Step 5 - Write data to DataLake in Parquet
+# MAGIC ###### Step 5 - Write data to DataLake in Delta
 
 # COMMAND ----------
 
 races_final_df.write.mode("overwrite") \
-    .format("parquet").saveAsTable("f1_processed.races")
-
-# COMMAND ----------
-
-display(spark.read.parquet("/mnt/formula1dluche/processed/races"))
+    .format("delta").saveAsTable("f1_processed.races")
 
 # COMMAND ----------
 

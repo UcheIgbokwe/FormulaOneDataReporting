@@ -26,6 +26,18 @@ v_file_date = dbutils.widgets.get("p_file_date")
 
 # COMMAND ----------
 
+# MAGIC %run "../utils/drop_and_create_all_tables"
+
+# COMMAND ----------
+
+drop_create_database('presentation')
+
+# COMMAND ----------
+
+drop_create_database('processed')
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the CSV file using the spark dataframe reader
 
@@ -94,11 +106,11 @@ circuits_final_df = add_ingestion_date(circuits_rename_df)
 # COMMAND ----------
 
 # MAGIC %md
-# MAGIC ###### Step 5 - Write data to DataLake in Parquet
+# MAGIC ###### Step 5 - Write data to DataLake in DeltaLake
 
 # COMMAND ----------
 
-circuits_final_df.write.mode("overwrite").format("parquet").saveAsTable("f1_processed.circuits")
+circuits_final_df.write.mode("overwrite").format("delta").saveAsTable("f1_processed.circuits")
 
 # COMMAND ----------
 

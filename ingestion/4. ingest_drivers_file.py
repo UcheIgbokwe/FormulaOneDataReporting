@@ -99,7 +99,7 @@ drivers_final_df = drivers_add_date_df.drop("url") \
 # COMMAND ----------
 
 drivers_final_df.write.mode("overwrite") \
-    .format("parquet").saveAsTable("f1_processed.drivers")
+    .format("delta").saveAsTable("f1_processed.drivers")
 
 # COMMAND ----------
 

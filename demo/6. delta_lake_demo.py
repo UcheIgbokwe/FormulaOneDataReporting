@@ -169,11 +169,6 @@ drivers_day3_df = spark.read \
 
 # COMMAND ----------
 
-# MAGIC %sql
-# MAGIC SELECT * FROM f1_demo.drivers_merge
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC Day 2
 
@@ -240,3 +235,50 @@ deltaTable.alias('tgt') \
     }
   ) \
   .execute()
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Convert Parquet in Table to Delta
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC CREATE TABLE IF NOT EXISTS f1_demo.drivers_convert_to_delta (
+# MAGIC   driverId INT,
+# MAGIC   dob DATE,
+# MAGIC   forename STRING,
+# MAGIC   surname STRING,
+# MAGIC   createdDate DATE,
+# MAGIC   updatedDate DATE
+# MAGIC )
+# MAGIC USING PARQUET
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC INSERT INTO f1_demo.drivers_convert_to_delta
+# MAGIC SELECT * FROM f1_demo.drivers_merge
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC CONVERT TO DELTA f1_demo.drivers_convert_to_delta
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC Convert Parquet in File to Delta
+
+# COMMAND ----------
+
+df = spark.table("f1_demo.drivers_convert_to_delta")
+
+# COMMAND ----------
+
+df.write.format("parquet").save(f"{demo_folder_path}/drivers_convert_to_delta_file")
+
+# COMMAND ----------
+
+file_path = f"{demo_folder_path}/drivers_convert_to_delta_file"
+spark.sql(f"CONVERT TO DELTA parquet.`{file_path}`")
