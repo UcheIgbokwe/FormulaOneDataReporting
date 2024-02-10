@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.circuits(
   url STRING
 )
 USING csv
-OPTIONS(path "/mnt/formula1dluche/raw/circuits.csv", header true)
+OPTIONS(path "/mnt/formula3dluche/raw/circuits.csv", header true)
 
 -- COMMAND ----------
 
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.races(
   url STRING
 )
 USING csv
-OPTIONS(path "/mnt/formula1dluche/raw/races.csv", header true)
+OPTIONS(path "/mnt/formula3dluche/raw/races.csv", header true)
 
 -- COMMAND ----------
 
@@ -66,7 +66,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.constructors(
   url STRING
 )
 USING json
-OPTIONS(path "/mnt/formula1dluche/raw/constructors.json")
+OPTIONS(path "/mnt/formula3dluche/raw/constructors.json")
 
 -- COMMAND ----------
 
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.drivers(
   url STRING
 )
 USING json
-OPTIONS(path "/mnt/formula1dluche/raw/drivers.json")
+OPTIONS(path "/mnt/formula3dluche/raw/drivers.json")
 
 -- COMMAND ----------
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.results(
   statusId INT
 )
 USING json
-OPTIONS(path "/mnt/formula1dluche/raw/results.json")
+OPTIONS(path "/mnt/formula3dluche/raw/results.json")
 
 -- COMMAND ----------
 
@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.pitstops(
   milliseconds INT
 )
 USING json
-OPTIONS(path "/mnt/formula1dluche/raw/pit_stops.json", multiLine true)
+OPTIONS(path "/mnt/formula3dluche/raw/pit_stops.json", multiLine true)
 
 
 -- COMMAND ----------
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.lap_times(
   milliseconds INT
 )
 USING csv
-OPTIONS(path "/mnt/formula1dluche/raw/lap_times")
+OPTIONS(path "/mnt/formula3dluche/raw/lap_times")
 
 -- COMMAND ----------
 
@@ -199,7 +199,7 @@ CREATE TABLE IF NOT EXISTS f1_raw.qualifying(
   q3 STRING
 )
 USING json
-OPTIONS(path "/mnt/formula1dluche/raw/qualifying", multiLine true)
+OPTIONS(path "/mnt/formula3dluche/raw/qualifying", multiLine true)
 
 -- COMMAND ----------
 

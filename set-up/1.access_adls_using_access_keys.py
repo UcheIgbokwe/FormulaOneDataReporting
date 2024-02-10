@@ -12,14 +12,14 @@ formula1_account_key = dbutils.secrets.get(scope = 'formula1-scope', key = 'form
 # COMMAND ----------
 
 spark.conf.set(
-    "fs.azure.account.key.formula1dluche.dfs.core.windows.net",
+    "fs.azure.account.key.formula3dluche.dfs.core.windows.net",
     formula1_account_key
 )
 
 # COMMAND ----------
 
-display(dbutils.fs.ls("abfss://demo@formula1dluche.dfs.core.windows.net"))
+display(dbutils.fs.ls("abfss://demo@formula3dluche.dfs.core.windows.net"))
 
 # COMMAND ----------
 
-display(spark.read.csv("abfss://demo@formula1dluche.dfs.core.windows.net/circuits.csv"))
+display(spark.read.csv("abfss://demo@formula3dluche.dfs.core.windows.net/circuits.csv"))
