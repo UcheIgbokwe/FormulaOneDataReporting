@@ -4,11 +4,16 @@
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC Important Note: When you mount an Azure Data Lake, it becomes associated with the configurations set at that specific time. Consequently, authentication is not required for subsequent ingestion and other actions. However, should there be a need to modify configurations such as the client secret or tenant ID, it is essential to unmount the Azure Data Lake and remount it accordingly.
+
+# COMMAND ----------
+
 def mount_adls(storage_account_name, container_name):
     # Get secrets from Key Vault
-    client_id = dbutils.secrets.get(scope = 'client_id_scope', key = 'client-id')
-    tenant_id = dbutils.secrets.get(scope = 'tenant_id_scope', key = 'tenant-id')
-    client_secret = dbutils.secrets.get(scope = 'client_secret_id_scope', key = 'client-secret-id')
+    client_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-id')
+    tenant_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'tenant-id')
+    client_secret = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-secret')
 
     # Set spark configurations
     configs = {"fs.azure.account.auth.type": "OAuth",
@@ -35,9 +40,9 @@ def mount_adls(storage_account_name, container_name):
 
 def un_mount_adls(storage_account_name, container_name):
     # Get secrets from Key Vault
-    client_id = dbutils.secrets.get(scope = 'client_id_scope', key = 'client-id')
-    tenant_id = dbutils.secrets.get(scope = 'tenant_id_scope', key = 'tenant-id')
-    client_secret = dbutils.secrets.get(scope = 'client_secret_id_scope', key = 'client-secret-id')
+    client_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-id')
+    tenant_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'tenant-id')
+    client_secret = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-secret')
 
     # Set spark configurations
     configs = {"fs.azure.account.auth.type": "OAuth",
@@ -56,19 +61,27 @@ def un_mount_adls(storage_account_name, container_name):
 # COMMAND ----------
 
 mount_adls('formula3dluche', 'raw')
+#un_mount_adls('formula3dluche', 'raw')
 
 # COMMAND ----------
 
 mount_adls('formula3dluche', 'processed')
+#un_mount_adls('formula3dluche', 'processed')
 
 # COMMAND ----------
 
 mount_adls('formula3dluche', 'presentation')
+#un_mount_adls('formula3dluche', 'presentation')
 
 # COMMAND ----------
 
 mount_adls('formula3dluche', 'demo')
+#un_mount_adls('formula3dluche', 'demo')
 
 # COMMAND ----------
 
-un_mount_adls('formula3dl', 'demo')
+#un_mount_adls('formula3dl', 'demo')
+
+# COMMAND ----------
+
+

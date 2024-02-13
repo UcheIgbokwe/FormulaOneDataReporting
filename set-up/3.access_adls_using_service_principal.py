@@ -8,9 +8,9 @@
 
 # COMMAND ----------
 
-client_id = dbutils.secrets.get(scope = 'client_id_scope', key = 'client-id')
-tenant_id = dbutils.secrets.get(scope = 'tenant_id_scope', key = 'tenant-id')
-client_secret = dbutils.secrets.get(scope = 'client_secret_id_scope', key = 'client-secret-id')
+client_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-id')
+tenant_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'tenant-id')
+client_secret = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-secret')
 
 # COMMAND ----------
 
@@ -27,3 +27,11 @@ display(dbutils.fs.ls("abfss://demo@formula3dluche.dfs.core.windows.net"))
 # COMMAND ----------
 
 display(spark.read.csv("abfss://demo@formula3dluche.dfs.core.windows.net/circuits.csv"))
+
+# COMMAND ----------
+
+display(dbutils.fs.ls("abfss://raw@formula3dluche.dfs.core.windows.net"))
+
+# COMMAND ----------
+
+display(spark.read.csv("abfss://raw@formula3dluche.dfs.core.windows.net/2021-03-21/circuits.csv"))

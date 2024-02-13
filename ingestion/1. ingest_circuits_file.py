@@ -26,18 +26,6 @@ v_file_date = dbutils.widgets.get("p_file_date")
 
 # COMMAND ----------
 
-# MAGIC %run "../utils/drop_and_create_all_tables"
-
-# COMMAND ----------
-
-drop_create_database('presentation')
-
-# COMMAND ----------
-
-drop_create_database('processed')
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the CSV file using the spark dataframe reader
 

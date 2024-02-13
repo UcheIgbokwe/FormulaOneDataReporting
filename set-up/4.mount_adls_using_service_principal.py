@@ -8,9 +8,9 @@
 
 # COMMAND ----------
 
-client_id = dbutils.secrets.get(scope = 'client_id_scope', key = 'client-id')
-tenant_id = dbutils.secrets.get(scope = 'tenant_id_scope', key = 'tenant-id')
-client_secret = dbutils.secrets.get(scope = 'client_secret_id_scope', key = 'client-secret-id')
+client_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-id')
+tenant_id = dbutils.secrets.get(scope = 'formula4-scope', key = 'tenant-id')
+client_secret = dbutils.secrets.get(scope = 'formula4-scope', key = 'client-secret')
 
 # COMMAND ----------
 
@@ -26,22 +26,17 @@ configs = {"fs.azure.account.auth.type": "OAuth",
 
 dbutils.fs.mount(
   source = "abfss://demo@formula3dluche.dfs.core.windows.net/",
-  mount_point = "/mnt/formula3dl/demo",
+  mount_point = "/mnt/formula3dluche/demo",
   extra_configs = configs)
 
 # COMMAND ----------
 
-display(dbutils.fs.ls("/mnt/formula3dl/demo"))
+display(dbutils.fs.ls("/mnt/formula3dluche/demo"))
 
 # COMMAND ----------
 
-display(spark.read.csv("/mnt/formula3dl/demo/circuits.csv"))
+display(spark.read.csv("/mnt/formula3dluche/demo/circuits.csv"))
 
 # COMMAND ----------
 
 display(dbutils.fs.mounts())
-
-# COMMAND ----------
-
-# Unmount the storage account container
-#dbutils.fs.unmount("/mnt/formula3dl/demo")
