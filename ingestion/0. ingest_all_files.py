@@ -4,12 +4,12 @@
 
 # COMMAND ----------
 
-# %run "../utils/drop_and_create_all_tables"
+# MAGIC %run "../utils/drop_and_create_all_tables"
 
 # COMMAND ----------
 
-# %python
-# drop_create_database('processed')
+#%python
+#drop_create_database('processed')
 
 # COMMAND ----------
 

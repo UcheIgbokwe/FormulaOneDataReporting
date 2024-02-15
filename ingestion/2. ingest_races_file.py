@@ -31,10 +31,6 @@ v_file_date = dbutils.widgets.get("p_file_date")
 
 # COMMAND ----------
 
-#display(dbutils.fs.mounts())
-
-# COMMAND ----------
-
 # MAGIC %md
 # MAGIC ###### Step 1 - Read the CSV file using the spark dataframe reader
 

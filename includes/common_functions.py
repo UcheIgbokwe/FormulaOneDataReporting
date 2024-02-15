@@ -6,6 +6,32 @@ def add_ingestion_date(input_df):
 
 # COMMAND ----------
 
+# MAGIC %md
+# MAGIC The function below is used to save parquet data into Delta tables using partition and merge
+
+# COMMAND ----------
+
+from pyspark.sql import SparkSession, DataFrame
+from delta.tables import *
+
+def merge_delta_data(df: DataFrame, table_name: str, folder_path: str, folder_name: str, partition_column: str, merge_condition: str):
+    spark.conf.set("spark.databricks.optimizer.dynamicPartitionPruning","true")
+
+    if spark._jsparkSession.catalog().tableExists(table_name):
+        deltaTable = DeltaTable.forPath(spark, f"{folder_path}/{folder_name}")
+        deltaTable.alias('tgt') \
+        .merge(
+            df.alias('src'),
+            merge_condition
+        ) \
+        .whenMatchedUpdateAll() \
+        .whenNotMatchedInsertAll() \
+        .execute()
+    else:
+        df.write.mode("overwrite").partitionBy(partition_column).format("delta").saveAsTable(table_name)    
+
+# COMMAND ----------
+
 from pyspark.sql import SparkSession, DataFrame
 
 def process_and_write_to_table(spark: SparkSession, df: DataFrame, table_name: str, partition_column: str, columns_to_move: list, dynamic_partition: bool = True):

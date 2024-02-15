@@ -132,7 +132,9 @@ results_final_df = results_dropped_df.withColumnRenamed("resultId", "result_id")
 
 # COMMAND ----------
 
-process_and_write_to_table(spark, results_final_df, "f1_processed.results", "race_id", ["race_id"], dynamic_partition=True)
+#process_and_write_to_table(spark, results_final_df, "f1_processed.results", "race_id", ["race_id"], dynamic_partition=True)
+merge_condition = "tgt.result_id = src.result_id AND tgt.race_id = src.race_id"
+merge_delta_data(results_final_df, "f1_processed.results", processed_folder_path, "results", "race_id", merge_condition)
 
 # COMMAND ----------
 

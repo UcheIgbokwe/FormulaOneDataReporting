@@ -80,7 +80,14 @@ pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("diverId"
 
 # COMMAND ----------
 
-process_and_write_to_table(spark, pit_stops_final_df, "f1_processed.pitstops", "race_id", ["race_id"], dynamic_partition=True)
+if spark._jsparkSession.catalog().tableExists(table_name):
+    df.write.mode("overwrite").insertInto(table_name)
+else:
+    df.write.mode("overwrite").partitionBy(partition_column).format("parquet").saveAsTable(table_name)
+
+# COMMAND ----------
+
+#process_and_write_to_table(spark, pit_stops_final_df, "f1_processed.pitstops", "race_id", ["race_id"], dynamic_partition=True)
 
 # COMMAND ----------
 
