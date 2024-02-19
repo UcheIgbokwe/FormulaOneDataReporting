@@ -71,7 +71,7 @@ from pyspark.sql.functions import lit
 # COMMAND ----------
 
 qualifying_final_df = qualifying_ingestion_date_df.withColumnRenamed("qualifyId", "qualify_id") \
-    .withColumnRenamed("diverId", "driver_id") \
+    .withColumnRenamed("driverId", "driver_id") \
     .withColumnRenamed("raceId", "race_id") \
     .withColumnRenamed("constructorId", "constructor_id") \
     .withColumn("data_source", lit(v_data_source)) \
@@ -84,7 +84,9 @@ qualifying_final_df = qualifying_ingestion_date_df.withColumnRenamed("qualifyId"
 
 # COMMAND ----------
 
-process_and_write_to_table(spark, qualifying_final_df, "f1_processed.qualifying", "race_id", ["race_id"], dynamic_partition=True)
+#process_and_write_to_table(spark, qualifying_final_df, "f1_processed.qualifying", "race_id", ["race_id"], dynamic_partition=True)
+merge_condition = "tgt.qualify_id = src.qualify_id AND tgt.race_id = src.race_id"
+merge_delta_data(qualifying_final_df, "f1_processed.qualifying", processed_folder_path, "qualifying", "race_id", merge_condition)
 
 # COMMAND ----------
 

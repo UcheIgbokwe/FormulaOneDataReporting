@@ -68,7 +68,7 @@ from pyspark.sql.functions import lit
 
 # COMMAND ----------
 
-pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("diverId", "driver_id") \
+pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("driverId", "driver_id") \
     .withColumnRenamed("raceId", "race_id") \
     .withColumn("data_source", lit(v_data_source)) \
     .withColumn("file_date", lit(v_file_date))
@@ -80,14 +80,9 @@ pit_stops_final_df = pit_stops_add_ingestion_date_df.withColumnRenamed("diverId"
 
 # COMMAND ----------
 
-if spark._jsparkSession.catalog().tableExists(table_name):
-    df.write.mode("overwrite").insertInto(table_name)
-else:
-    df.write.mode("overwrite").partitionBy(partition_column).format("parquet").saveAsTable(table_name)
-
-# COMMAND ----------
-
 #process_and_write_to_table(spark, pit_stops_final_df, "f1_processed.pitstops", "race_id", ["race_id"], dynamic_partition=True)
+merge_condition = "tgt.race_id = src.race_id AND tgt.driver_id = src.driver_id AND tgt.stop = src.stop AND tgt.race_id = src.race_id"
+merge_delta_data(pit_stops_final_df, "f1_processed.pitstops", processed_folder_path, "pitstops", "race_id", merge_condition)
 
 # COMMAND ----------
 

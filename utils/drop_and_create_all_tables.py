@@ -19,3 +19,7 @@ def drop_create_database(parameter):
 
     return f'Database {db_name} created successfully at {location}'
 
+
+# COMMAND ----------
+
+spark.sql("DROP TABLE IF EXISTS f1_processed.pitstops")

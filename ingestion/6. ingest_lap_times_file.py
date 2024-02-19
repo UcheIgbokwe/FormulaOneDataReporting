@@ -66,7 +66,7 @@ from pyspark.sql.functions import lit
 
 # COMMAND ----------
 
-lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("diverId", "driver_id") \
+lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("driverId", "driver_id") \
     .withColumnRenamed("raceId", "race_id") \
     .withColumn("data_source", lit(v_data_source)) \
     .withColumn("file_date", lit(v_file_date))
@@ -78,7 +78,9 @@ lap_times_final_df = lap_times_ingestion_date_df.withColumnRenamed("diverId", "d
 
 # COMMAND ----------
 
-process_and_write_to_table(spark, lap_times_final_df, "f1_processed.lap_times", "race_id", ["race_id"], dynamic_partition=True)
+#process_and_write_to_table(spark, lap_times_final_df, "f1_processed.lap_times", "race_id", ["race_id"], dynamic_partition=True)
+merge_condition = "tgt.race_id = src.race_id AND tgt.driver_id = src.driver_id AND tgt.lap = src.lap AND tgt.race_id = src.race_id"
+merge_delta_data(lap_times_final_df, "f1_processed.lap_times", processed_folder_path, "lap_times", "race_id", merge_condition)
 
 # COMMAND ----------
 
