@@ -98,6 +98,15 @@ results_final_df = results_dropped_df.withColumnRenamed("resultId", "result_id")
 # COMMAND ----------
 
 # MAGIC %md
+# MAGIC Drop duplicates
+
+# COMMAND ----------
+
+results_deduped_df = drop_duplicates_in_df(results_final_df, ["race_id", "driver_id"])
+
+# COMMAND ----------
+
+# MAGIC %md
 # MAGIC ###### Step 3 - Write data to DataLake in Parquet
 
 # COMMAND ----------
@@ -134,7 +143,7 @@ results_final_df = results_dropped_df.withColumnRenamed("resultId", "result_id")
 
 #process_and_write_to_table(spark, results_final_df, "f1_processed.results", "race_id", ["race_id"], dynamic_partition=True)
 merge_condition = "tgt.result_id = src.result_id AND tgt.race_id = src.race_id"
-merge_delta_data(results_final_df, "f1_processed.results", processed_folder_path, "results", "race_id", merge_condition)
+merge_delta_data(results_deduped_df, "f1_processed.results", processed_folder_path, "results", "race_id", merge_condition)
 
 # COMMAND ----------
 
@@ -150,3 +159,8 @@ dbutils.notebook.exit('Success')
 # SELECT race_id, count(1) FROM f1_processed.results
 # GROUP BY race_id
 # ORDER BY race_id DESC;
+
+# COMMAND ----------
+
+# %sql
+# drop table f1_processed.results

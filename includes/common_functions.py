@@ -75,3 +75,13 @@ def df_column_to_list(input_df, column_name):
     # PYTHON WAY OF DOING AN APPEND
     column_value_list= [row[column_name] for row in df_row_list]
     return column_value_list                        
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC De-dupe the dataframe
+
+# COMMAND ----------
+
+def drop_duplicates_in_df(input_df, unique_columns: list):
+  return input_df.dropDuplicates(unique_columns)
