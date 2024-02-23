@@ -21,30 +21,30 @@ v_file_date = dbutils.widgets.get("p_file_date")
 
 # COMMAND ----------
 
-races_df = spark.read.parquet(f"{processed_folder_path}/races") \
+races_df = spark.read.format("delta").load(f"{processed_folder_path}/races") \
     .withColumnRenamed("name", "race_name") \
     .withColumnRenamed("race_timestamp", "race_date")
 
 # COMMAND ----------
 
-circuits_df = spark.read.parquet(f"{processed_folder_path}/circuits") \
+circuits_df = spark.read.format("delta").load(f"{processed_folder_path}/circuits") \
     .withColumnRenamed("location", "circuit_location")
 
 # COMMAND ----------
 
-drivers_df = spark.read.parquet(f"{processed_folder_path}/drivers") \
+drivers_df = spark.read.format("delta").load(f"{processed_folder_path}/drivers") \
     .withColumnRenamed("name", "driver_name") \
     .withColumnRenamed("number", "driver_number") \
     .withColumnRenamed("nationality", "driver_nationality")
 
 # COMMAND ----------
 
-constructors_df = spark.read.parquet(f"{processed_folder_path}/constructors") \
+constructors_df = spark.read.format("delta").load(f"{processed_folder_path}/constructors") \
     .withColumnRenamed("name", "team")
 
 # COMMAND ----------
 
-results_df = spark.read.parquet(f"{processed_folder_path}/results") \
+results_df = spark.read.format("delta").load(f"{processed_folder_path}/results") \
     .filter(f"file_date == '{v_file_date}'") \
     .withColumnRenamed("time", "race_time") \
     .withColumnRenamed("race_id", "result_race_id") \
@@ -77,12 +77,9 @@ final_df = race_results_df.select('race_id','race_year', 'race_name', 'circuit_l
 
 # COMMAND ----------
 
-#display(final_df.filter('race_year == 2020 and race_name == "Abu Dhabi Grand Prix"').orderBy(final_df.points.desc()))
-#display(final_df)
-
-# COMMAND ----------
-
-process_and_write_to_table(spark, final_df, "f1_presentation.race_results", "race_id", ["race_id"], dynamic_partition=True)
+#process_and_write_to_table(spark, final_df, "f1_presentation.race_results", "race_id", ["race_id"], dynamic_partition=True)
+merge_condition = "tgt.race_id = src.race_id AND tgt.driver_name = src.driver_name "
+merge_delta_data(final_df, "f1_presentation.race_results", presentation_folder_path, "race_results", "race_id", merge_condition)
 
 # COMMAND ----------
 
@@ -91,3 +88,19 @@ finalize_notebook()
 # COMMAND ----------
 
 dbutils.notebook.exit('Success')
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select *
+# MAGIC from f1_presentation.race_results
+# MAGIC
+# MAGIC
+
+# COMMAND ----------
+
+# MAGIC %sql
+# MAGIC select race_id, count(1)
+# MAGIC from f1_presentation.race_results
+# MAGIC group by race_id
+# MAGIC order by race_id desc;
