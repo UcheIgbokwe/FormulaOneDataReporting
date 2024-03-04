@@ -1,0 +1,1 @@
+This folder is dedicated to Azure Data factory setup
