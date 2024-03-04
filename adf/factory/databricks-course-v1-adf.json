@@ -1,0 +1,9 @@
+{
+	"name": "databricks-course-v1-adf",
+	"location": "swedencentral",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "72b9a219-0e75-4f12-a42b-ae295f6b36b8",
+		"tenantId": "93b308dc-98b4-4743-9e42-fddf287ec22c"
+	}
+}
